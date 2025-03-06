@@ -1,31 +1,33 @@
-// Initialize scene, camera, and renderer
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('minecraftCanvas') });
-renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('login-form').addEventListener('submit', function(event) {
+  event.preventDefault();
 
-// Set up the camera position and look at the scene
-camera.position.z = 5;
-camera.position.y = 5;
-camera.lookAt(scene.position);
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorMessage = document.getElementById('error-message');
 
-// Set up controls
-let isPlacingBlock = true;  // Toggle between placing and removing blocks
+  errorMessage.textContent = ''; // Clear previous error messages
 
-// Create block geometry and material
-const blockGeometry = new THREE.BoxGeometry(1, 1, 1);
-const blockMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });  // Brown for blocks
+  // Validation for email and password
+  if (!validateEmail(email)) {
+    errorMessage.textContent = 'Please enter a valid email address (e.g., example@gmail.com)';
+    return;
+  }
 
-// Array to hold the blocks
-const blocks = [];
+  if (password.length < 6) {
+    errorMessage.textContent = 'Password must be at least 6 characters long';
+    return;
+  }
 
-// Function to create a block at a specific position
-function createBlock(x, y, z) {
-  const block = new THREE.Mesh(blockGeometry, blockMaterial);
-  block.position.set(x, y, z);
-  scene.add(block);
-  blocks.push(block);
+  // If the validation passes, show a success message or simulate login
+  alert('Login Successful!');
+});
+
+// Function to validate email format
+function validateEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com|outlook\.com|yahoo\.com)$/;
+  return regex.test(email);
 }
+<<<<<<< SEARCH
 
 // Initialize a simple grid of blocks
 for (let x = -5; x < 5; x++) {
@@ -33,63 +35,27 @@ for (let x = -5; x < 5; x++) {
     createBlock(x, 0, z);  // Create a floor grid of blocks
   }
 }
+=======
 
-// Function to remove a block
-function removeBlock(x, y, z) {
-  for (let i = 0; i < blocks.length; i++) {
-    const block = blocks[i];
-    if (block.position.x === x && block.position.y === y && block.position.z === z) {
-      scene.remove(block);
-      blocks.splice(i, 1);
-      break;
-    }
+// Initialize a simple grid of blocks
+for (let x = -5; x < 5; x++) {
+  for (let z = -5; z < 5; z++) {
+    createBlock(x, 0, z);  // Create a floor grid of blocks
   }
 }
+>>>>>>> REPLACE
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-// Handle mouse click to place or remove blocks
-document.addEventListener('mousedown', (event) => {
-  const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-  const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    // هنا يمكنك إضافة منطق التحقق من صحة بيانات الدخول
+    // (مثلاً، مقارنة اسم المستخدم وكلمة المرور بقاعدة بيانات)
 
-  // Raycasting to detect where the user clicks
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2(mouseX, mouseY);
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children);
-
-  if (intersects.length > 0) {
-    const intersect = intersects[0];
-    const position = intersect.object.position;
-
-    if (isPlacingBlock) {
-      createBlock(position.x + Math.round(mouseX), position.y, position.z + Math.round(mouseY));
+    if (username && password) { //  تحقق بسيط مؤقت
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("welcome-message").style.display = "block";
+        document.getElementById("user-name").textContent = username;
     } else {
-      removeBlock(position.x, position.y, position.z);
+        alert("الرجاء إدخال اسم المستخدم وكلمة المرور.");
     }
-  }
-});
-
-// Toggle between placing and removing blocks
-document.addEventListener('keydown', (event) => {
-  if (event.key === ' ') {  // Space bar toggles between placing/removing blocks
-    isPlacingBlock = !isPlacingBlock;
-  }
-});
-
-// Function to animate the scene
-function animate() {
-  requestAnimationFrame(animate);
-
-  renderer.render(scene, camera);
 }
-
-// Start the animation loop
-animate();
-
-// Resize the canvas on window resize
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-});
