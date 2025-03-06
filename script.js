@@ -27,7 +27,7 @@ function validateEmail(email) {
   const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com|outlook\.com|yahoo\.com)$/;
   return regex.test(email);
 }
-<<<<<<< SEARCH
+SEARCH
 
 // Initialize a simple grid of blocks
 for (let x = -5; x < 5; x++) {
@@ -35,7 +35,6 @@ for (let x = -5; x < 5; x++) {
     createBlock(x, 0, z);  // Create a floor grid of blocks
   }
 }
-=======
 
 // Initialize a simple grid of blocks
 for (let x = -5; x < 5; x++) {
@@ -43,7 +42,7 @@ for (let x = -5; x < 5; x++) {
     createBlock(x, 0, z);  // Create a floor grid of blocks
   }
 }
->>>>>>> REPLACE
+REPLACE
 function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -58,4 +57,34 @@ function login() {
     } else {
         alert("الرجاء إدخال اسم المستخدم وكلمة المرور.");
     }
+}
+document.getElementById('login-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorMessage = document.getElementById('error-message');
+
+  errorMessage.textContent = ''; // Clear previous error messages
+
+  // Validation for email and password
+  if (!validateEmail(email)) {
+    errorMessage.textContent = 'Please enter a valid email address (e.g., example@gmail.com)';
+    return;
+  }
+
+  if (password.length < 6) {
+    errorMessage.textContent = 'Password must be at least 6 characters long';
+    return;
+  }
+
+  // If the validation passes, redirect to Google
+  alert('Login Successful!');
+  window.location.href = 'https://www.google.com'; // Redirect to Google
+});
+
+// Function to validate email format
+function validateEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com|outlook\.com|yahoo\.com)$/;
+  return regex.test(email);
 }
